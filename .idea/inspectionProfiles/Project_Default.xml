@@ -1,0 +1,59 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="hint" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyChainedComparisonsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoreConstantInTheMiddle" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="18">
+            <item index="0" class="java.lang.String" itemvalue="mkdocs-material" />
+            <item index="1" class="java.lang.String" itemvalue="mypy" />
+            <item index="2" class="java.lang.String" itemvalue="flaky" />
+            <item index="3" class="java.lang.String" itemvalue="papermill" />
+            <item index="4" class="java.lang.String" itemvalue="pre-commit" />
+            <item index="5" class="java.lang.String" itemvalue="inari" />
+            <item index="6" class="java.lang.String" itemvalue="mkdocs-git-revision-date-localized-plugin" />
+            <item index="7" class="java.lang.String" itemvalue="mkdocs" />
+            <item index="8" class="java.lang.String" itemvalue="mkdocs-macros-plugin" />
+            <item index="9" class="java.lang.String" itemvalue="bashate" />
+            <item index="10" class="java.lang.String" itemvalue="pytest-order" />
+            <item index="11" class="java.lang.String" itemvalue="mkdocs-pdf-export-plugin" />
+            <item index="12" class="java.lang.String" itemvalue="pymdown-extensions" />
+            <item index="13" class="java.lang.String" itemvalue="pytest-cov" />
+            <item index="14" class="java.lang.String" itemvalue="mktheapidocs" />
+            <item index="15" class="java.lang.String" itemvalue="blacken-docs" />
+            <item index="16" class="java.lang.String" itemvalue="pre-commit-hooks" />
+            <item index="17" class="java.lang.String" itemvalue="mkdocs-mermaid-plugin" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N806" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="src.start_clock_30.DISPLAY" />
+          <option value="src.ploting_utils.matplotlib" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

@@ -1,0 +1,64 @@
+* {box-sizing: border-box;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif}
+body {min-width: 320px;margin: auto;width:320px;height: 100vh;
+    background-color: #47474d;}
+.grid-container {display: grid;grid-template-columns: auto auto auto;
+    background-color: #222222;padding: 10px}
+.grid-item {padding: 10px;font-size: 2rem;text-align: center}
+.grid-item-narrow {padding: 0 10px; text-align: center}
+.deco {font-size: 16px;color: #888888}
+footer{padding:30px;text-align:center;
+    width:100%;color:#ffffff;background:#222222;font-size:0.8rem}
+@font-face{font-family:'FontAwesome';src:url('fontawesome-webfont.woff?v=4.6.3') format('woff');font-weight:normal;font-style:normal}
+.fa{display:inline-block;font:normal normal normal 20px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.fa-stack{position:relative;display:inline-block;width:2.5em;height:2em;line-height:2em;vertical-align:middle}
+.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}
+.fa-stack-1x{line-height:inherit}
+.fa-stack-2x{font-size:2.5em}
+.fa-stack-p{width:2em; height:2em;line-height:inherit}
+.fa-inverse{color:#fff}
+.fa-circle:before{content:"\f111"}
+.fa-power-off:before{content:"\f011"}
+@font-face {font-family: "D7MI";src: url("DSEG7Modern-Italic.woff") format('woff');}
+.D7MI {font-family: "D7MI"}
+select {font-family: "D7MI"; 
+    border: 0 solid #ccffcc; 
+    background-color: #ccffcc}
+.display-frame {position:relative;border:6px solid #000;border-radius:9px;
+    height:150px; width:290px;
+    box-shadow: 4px 4px 1px 0px rgba(0,0,0,0.1) inset;
+    margin: auto;background: #ccffcc}
+.time-reading-on {z-index:100;position:absolute;top:20px;left:10px;font-size:62px}
+.time-reading-off {z-index:100;position:absolute;top:20px;left:130px;font-size:62px}
+.mask {z-index: 50;color: rgba(0, 0, 0, 0.05)}
+.second-line,.second-line-display {position: absolute;top: 110px;left: 15px;font-size: 26px;}
+.off {margin-left: 85px;}
+.indicator {display:none}
+
+button {
+    padding: 8px 8px;
+    font-size: 3.5em;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #2a2c2e;
+    border: none;
+    border-radius: 1.25em;
+    box-shadow: 0 4px #999;
+    align-items: flex-end;
+    width:100%;
+    height:70%;
+
+  }
+
+button:hover {background-color: #6194bb}
+
+button:active {
+    background-color: #385469;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+
+
+

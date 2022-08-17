@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="apple-mobile-web-app-title" content="House Fan Contoller">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
+    <title>House Fan Remote</title>
+    <link rel="stylesheet" href="static/fan.css">
+  </head>
+  <body>
+    <form id="fan_light" action="/" method="post">
+    <div class="grid-container">
+        <div class="grid-item">
+        </div>
+      <div class="grid-item">
+        <button name="light" type="submit" class="fa fa-stack-p" > 
+          <i id="light-on_off 00" class="fa fa-power-off  fa-inverse"></i>
+        </button>  
+      
+             </div>
+    
+      <div class="grid-item">
+        
+      </div>
+      <div class="grid-item-narrow"> </div>
+      <div class="grid-item-narrow">
+        <span class="deco">Light</span>
+      </div>
+      <div class="grid-item-narrow"></div>
+    </div>
+</form>
+<form id="fan_mode" action="/" method="post">
+    <div class="grid-container" id="fan-display">
+      <div class="display-frame backlight">
+        <select class="time-reading-on D7MI" id="fan-on" 
+            name="fan-on" method="post">
+          <option value= {{ web_status["fan-on"] }}> {{ web_status["fan-on"]}}</option>
+              {% for m in range(0, 60, 2) %}
+                  <option value={{ m }}>{{m}}</option>
+              {% endfor %}
+        </select>
+        
+        <select class="time-reading-off D7MI " id="fan-off" 
+            name="fan-off" method="post">
+          <option value= {{ web_status["fan-off"] }}> {{ web_status["fan-off"]}}</option>
+              {% for m in range(0,60, 5) %}
+                  <option value={{ m }}>{{m}}</option>
+              {% endfor %}
+        </select>
+        <div class="second-line">
+          <span class=" D7MI">ON</span>
+          <span class="off  D7MI">OFF</span>
+        </div>
+          
+      </div>
+    </div>
+    <div class="grid-container">
+      <div class="grid-item">
+      </div>
+      <div class="grid-item">
+        <div class="fa-stack ">
+          <button class="deco" name="med", id="med">MED</button>
+        </div>
+      </div>
+      <div class="grid-item">
+      </div>
+      <div class="grid-item">
+        <div class="fa-stack">
+          <button class="deco" name="low", id="low">LOW</button>
+        </div>
+      </div>
+     
+      <div class="grid-item">
+        <div class="fa-stack">
+          <button class="deco" name="off", id="off">OFF</button>
+        </div>
+      </div>
+      <div class="grid-item">
+        <div class="fa-stack icons">
+          <button class="deco" name="high", id="high">HIGH</button>
+        </div>
+      </div>
+      
+    </div>
+
+    <footer class="footer">--- Evelyn J. Boettcher ---</footer>
+</form>
+  </body>
+</html>

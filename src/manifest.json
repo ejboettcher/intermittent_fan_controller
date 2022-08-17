@@ -1,0 +1,15 @@
+{
+    "name": "Evelyn Fan Remote",
+    "description": "Intermittent Fan Controller",
+    "icons": [
+      {
+        "src": "static/images/icon.png",
+        "type": "image/png",
+        "sizes": "120x120"
+      }
+    ],
+    "scope": "/",
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "orientation": "portrait"
+  }
