@@ -106,7 +106,7 @@ def main():
     
     button = request.form.to_dict(flat=False)
     print("button", button)
-    fan_command = None
+    fan_command = "fan_low"
     if 'light' in button:
         FAN.run_command("light_on")
         # Turn light On off

@@ -6,8 +6,8 @@ Based on
 
 I can not sleep with a fan blowing on me.  My husband can not sleep without a fan on him.  Initially, I thought that
 we could not sleep well together since ceiling fans are designed to be either on or off. 
-Which is unfortunate since I like sleeping with him and
-we could both sleep well if the ceiling fan was only briefly on. I needed a way to turn the fan off after 5 minutes 
+Which is unfortunate since I like sleeping with him, and we could both sleep well if the
+ceiling fan was only briefly on. I needed a way to turn the fan off after 5 minutes 
 and then back on in 20 minutes. 
 So I built an adjustable intermittent fan controller with roughly $30 of electronics and
 two python scripts. 
@@ -48,15 +48,15 @@ we need to figure how that signal is encoded.  The two main ways to figure
 out what radio frequency a remote uses is to either measure it or read the manual.  
 In order to measure it, one can use USB TV Tuner as shown in the
 [Hack My Ceiling Fan Radio Signal with a $15 USB TV Tuner](https://www.youtube.com/watch?v=_GCpqory3kc&list=PLd0h4lJ7ve9KpkbUbsEXxsDlqNxwA-aWH&index=1). 
-Or you can take look up what frequency they are using at the FCC website.  
-All transmitters have to report what frequency's they use. 
+Or you can look up what frequency they are using at the FCC website.  
+All transmitters have to report what frequency they use. 
 Mine uses 304MHz [FCC ID: KUJCE10007](https://fccid.io/KUJCE10007).  
 
 ![fan remote back](./images/remote_back.jpg)
 I measured 304.2MHz which is close enough.  
 There is variation from remote to remote. I have three Minka Aire remotes and
 some are higher or lower than stated.
-To figure out how the RF signal is encoded you can measure it or use
+To figure out how the RF signal is encoded you can measure it or 
 use the information from the video ([River's Educational Video](https://www.youtube.com/watch?v=3lGU7PjJM7k)) .  Let's use the latter.
 
 ### Fans Codes
@@ -142,7 +142,7 @@ the first 8 digits is the fan's ID and the next 5 are the fan remote command.
 By recording for each button on the fan and then analysing each 
 RF signal you can get the above table of commands.  
 
-Do note different controller may use different frequencies and encodings. So, you may need to go 
+Do note that a different controller may use different frequencies and encodings. So, you may need to go 
 through this process if you have a different controller.
 
 | RF Interpretation                                           | RF Analysis |
@@ -158,7 +158,7 @@ Do watch River's Educational Channel for how to set up your Raspberry Pi and for
 * [Abusing Raspberry Pi GPIO pins as a radio transmitter to control my ceiling fan](https://www.youtube.com/watch?v=3lGU7PjJM7k)
 	
 
-* [ESP32_IR Remote for there wonderfull css](https://github.com/e-tinkers/esp32_ir_remote)
+* [ESP32_IR Remote for their wonderful css](https://github.com/e-tinkers/esp32_ir_remote)
 
 * [FCCID KUJCE10007](https://fccid.io/KUJCE10007)
 
