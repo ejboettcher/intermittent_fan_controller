@@ -17,13 +17,11 @@ import shlex
 
 
 def send_command_many(FAN, command_str, n=3):
-    FAN.fan_wakeup()
     time.sleep(.2)
     for ii in range(n):
         FAN.send_command(command_str)
         time.sleep(1)
-    FAN.fan_sleep()
-    
+
 
 def start_subprocess(command, str_cmd=False):
     """
@@ -54,7 +52,7 @@ def start_subprocess(command, str_cmd=False):
 
 class FanRemote(object):
     def __init__(self, *args, **kwargs):
-        self.GPIO_pin = 7
+        self.GPIO_pin = 4  # BCM 4 or Pi pin 7
         self.fan_type = "minka-aire"
         # 8 pin fan ID on back of controller near battery
         self.fan_id = "".join(["0000", "1000"])
@@ -89,7 +87,10 @@ class FanRemote(object):
 
     def make_command(self, command):
         sendook = "sudo rpitx/sendook "
-        fan_signal_settings = " -0 333 -1 333 -r 4 -p 10000 "
+        if command == "light_on" or "light_off":
+            fan_signal_settings = " -0 333 -1 333 -r 2 -p 10000 "
+        else:
+            fan_signal_settings = " -0 333 -1 333 -r 4 -p 10000 "
         fan_id = ""
         for ii in range(8):
             ook = self.fan_ook()[self.fan_id[ii]]
@@ -99,7 +100,7 @@ class FanRemote(object):
         for ii in range(5):
             ook = self.fan_ook()[fan_code[ii]]
             fan_command += ook
-        cmd_str = sendook + " -f "+ self.freq + fan_signal_settings + fan_id + fan_command
+        cmd_str = sendook + " -f " + self.freq + fan_signal_settings + fan_id + fan_command
         print(cmd_str)
         return cmd_str
 
@@ -113,6 +114,7 @@ class FanRemote(object):
 
     def fan_wakeup(self):
         # Activate the GPIO pins
+        # Not Needed for RPITX b
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.GPIO_pin, GPIO.IN)
         return
@@ -122,8 +124,7 @@ class FanRemote(object):
         Other fans can be added here
         Need to know what to send when the bit is a 1 or 0
         """
-        fan = {"minka-aire": {"1": "101", "0": "100"},
-            }
+        fan = {"minka-aire": {"1": "101", "0": "100"}, }
         return fan.get(self.fan_type, {"1": "101", "0": "100"})
 
     def fan_codes(self, action):
@@ -131,13 +132,13 @@ class FanRemote(object):
         Dictionary of fan bit codes
         """
         fan = {"light_on": "01010",
-            "light_off": "10010", 
-            "fan_low": "00100",
-            "fan_med": "01000",
-            "fan_high": "10000",
-            "fan_off": "10100",
-            "fan_reverse": "00010",
-        }
+               "light_off": "10010",
+               "fan_low": "00100",
+               "fan_med": "01000",
+               "fan_high": "10000",
+               "fan_off": "10100",
+               "fan_reverse": "00010",
+            }
 
         return fan.get(action)
 
