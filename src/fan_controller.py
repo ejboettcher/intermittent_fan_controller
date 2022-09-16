@@ -50,8 +50,33 @@ def start_subprocess(command, str_cmd=False):
     return out, err
 
 
+def send_command(command_str):
+    start_subprocess(command_str, False)
+
+
+def fan_sleep():
+    # Clear the GPIO Pins
+    GPIO.cleanup()
+    return
+
+
+def fan_codes(action):
+    """
+    Dictionary of fan bit codes
+    """
+    fan = {"light_on": "01010",
+           "light_off": "10010",
+           "fan_low": "00100",
+           "fan_med": "01000",
+           "fan_high": "10000",
+           "fan_off": "10100",
+           "fan_reverse": "00010"}
+
+    return fan.get(action)
+
+
 class FanRemote(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.GPIO_pin = 4  # BCM 4 or Pi pin 7
         self.fan_type = "minka-aire"
         # 8 pin fan ID on back of controller near battery
@@ -61,7 +86,7 @@ class FanRemote(object):
         self.status = {"fan-on": 2, "fan-off": 10}
         self.stop_itermittent = False
         self.GPIO_pinfan_off = True
-        self.fan_light = 1 # Keep track of the light is on/off
+        self.fan_light = 1  # Keep track of the light is on/off
         self.thread = None
 
     def run_command(self, command):
@@ -79,6 +104,8 @@ class FanRemote(object):
             self.fan_light = 0
         else:
             self.fan_light = 1
+        if command == 'fan_off':
+            self.status['fan-on'] = 0
         command_str = self.make_command(command)  
         if self.thread is not None:
             self.thread.join()
@@ -95,7 +122,7 @@ class FanRemote(object):
         for ii in range(8):
             ook = self.fan_ook()[self.fan_id[ii]]
             fan_id += ook
-        fan_code = self.fan_codes(command)
+        fan_code = fan_codes(command)
         fan_command = ""
         for ii in range(5):
             ook = self.fan_ook()[fan_code[ii]]
@@ -103,14 +130,6 @@ class FanRemote(object):
         cmd_str = sendook + " -f " + self.freq + fan_signal_settings + fan_id + fan_command
         print(cmd_str)
         return cmd_str
-
-    def send_command(self, command_str):
-        start_subprocess(command_str, False)
-
-    def fan_sleep(self):
-        # Clear the GPIO Pins
-        GPIO.cleanup()
-        return
 
     def fan_wakeup(self):
         # Activate the GPIO pins
@@ -126,25 +145,3 @@ class FanRemote(object):
         """
         fan = {"minka-aire": {"1": "101", "0": "100"}, }
         return fan.get(self.fan_type, {"1": "101", "0": "100"})
-
-    def fan_codes(self, action):
-        """
-        Dictionary of fan bit codes
-        """
-        fan = {"light_on": "01010",
-               "light_off": "10010",
-               "fan_low": "00100",
-               "fan_med": "01000",
-               "fan_high": "10000",
-               "fan_off": "10100",
-               "fan_reverse": "00010",
-            }
-
-        return fan.get(action)
-
-
-
-
-
-
-

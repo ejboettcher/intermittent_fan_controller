@@ -21,9 +21,9 @@ PERMANENT_SESSION_LIFETIME = 180
 app.config.update(SECRET_KEY=os.urandom(24))
 app.config.from_object(__name__)
 
+#  -------FAN FLASK APP
 
 
-#-------FAN FLASK APP
 @app.route('/popsession')
 def popsession():
     session.pop('Username', None)
@@ -60,17 +60,19 @@ def sleep_check(sleep_time, check_interval, stop=lambda: False):
         curr_time = datetime.datetime.now()
         # exit criteria is when current time i
         if (curr_time - start_time).seconds >= sleep_time * 60:
-        	return None
-        elif (curr_time - start_time).seconds %15 ==0:
+            return
+        elif (curr_time - start_time).seconds % 15 == 0:
             print(curr_time)
-            
 
 
 def run_intermittent(fan_speed, stop=lambda: False):
     """
-    Running this as a thread with a the ability to stop this 
+    Running this as a thread with the ability to stop this
     thread when the fan status changes
 
+    INPUT:
+        fan_speed: str
+            This will become the command that is sent to the fan
     """
     while True:
         if fan_speed == "fan_off":
@@ -82,7 +84,7 @@ def run_intermittent(fan_speed, stop=lambda: False):
         
         FAN.fan_wakeup()
         FAN.run_command(fan_speed)
-        sleep_check(FAN.status["fan-on"], 1, stop )
+        sleep_check(FAN.status["fan-on"], 1, stop)
 
         # after waking from sleep, see if we should stop
         if stop():
@@ -102,6 +104,12 @@ def run_intermittent(fan_speed, stop=lambda: False):
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
+    """
+    This is the main app.
+    Returns: request
+        html update
+
+    """
     global at, stop_thread
     
     button = request.form.to_dict(flat=False)
@@ -133,7 +141,7 @@ def main():
     FAN.run_command(fan_command)
     if fan_command != "fan_off":
         stop_thread = False
-        at = Thread(target=run_intermittent, args=(fan_command, lambda:stop_thread))
+        at = Thread(target=run_intermittent, args=(fan_command, lambda: stop_thread))
         at.start()
     return render_template('index.html', web_status=FAN.status)
 
@@ -148,5 +156,6 @@ def start_app():
 
 if __name__ == "__main__":
     at = None
+    stop_thread = False
     FAN = Fan()
     start_app()
