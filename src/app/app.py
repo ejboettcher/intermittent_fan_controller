@@ -10,7 +10,6 @@ License MIT
 from flask import Flask, flash, redirect,  \
     render_template,  request, session
 import time
-import sys
 import os
 from fan_controller import FanRemote as Fan
 from threading import Thread
@@ -30,7 +29,7 @@ def popsession():
     return "Session Deleted"
 
 
-def sleep_check(sleep_time, check_interval, stop=lambda: False):
+def sleep_check(sleep_time, check_interval, fan_command, stop=lambda: False):
     """
     sleep for an overall period of time, waking up to check for a 
     stop at a given interval
@@ -39,6 +38,7 @@ def sleep_check(sleep_time, check_interval, stop=lambda: False):
     ======
     sleep_time :: overall time to sleep in min
     check_interval :: period before semaphore checking, seconds
+    fan_command:: str, sending fan command again to ensure the fan got it.
     stop :: semaphore function, returns True when time to exit
 
     Returns:
@@ -48,7 +48,7 @@ def sleep_check(sleep_time, check_interval, stop=lambda: False):
 
     # get initial time when starting
     start_time = datetime.datetime.now()
-
+    j = 0
     while True:
         # check for stop, if present return
         if stop():
@@ -59,10 +59,16 @@ def sleep_check(sleep_time, check_interval, stop=lambda: False):
         # get current time
         curr_time = datetime.datetime.now()
         # exit criteria is when current time i
-        if (curr_time - start_time).seconds >= sleep_time * 60:
+        if (curr_time - start_time).seconds >= int(sleep_time) * 60:
             return
-        elif (curr_time - start_time).seconds % 15 == 0:
-            print(curr_time)
+        elif j < 2:
+            # Sending the fan command again to ensure it does what you want in this loop
+            j += 1
+            FAN.run_command(fan_command)
+            print(fan_command)
+            time.sleep(1)
+        # elif (curr_time - start_time).seconds % 20 == 0:
+        #     print(curr_time)
 
 
 def run_intermittent(fan_speed, stop=lambda: False):
@@ -81,10 +87,9 @@ def run_intermittent(fan_speed, stop=lambda: False):
             FAN.fan_off = True
         if FAN.fan_off:
             break
-        
-        FAN.fan_wakeup()
+
         FAN.run_command(fan_speed)
-        sleep_check(FAN.status["fan-on"], 1, stop)
+        sleep_check(FAN.status["fan-on"], 2, fan_speed, stop)
 
         # after waking from sleep, see if we should stop
         if stop():
@@ -92,9 +97,8 @@ def run_intermittent(fan_speed, stop=lambda: False):
             break
 
         # set fan off for 50 minutes
-        FAN.fan_wakeup()
         FAN.run_command("fan_off")
-        sleep_check(FAN.status["fan-off"], 1, stop)
+        sleep_check(FAN.status["fan-off"], 2, "fan_off", stop)
 
         # after waking from sleep, see if we should stop
         if stop():
@@ -108,10 +112,8 @@ def main():
     This is the main app.
     Returns: request
         html update
-
     """
     global at, stop_thread
-    
     button = request.form.to_dict(flat=False)
     print("button", button)
     fan_command = "fan_low"
@@ -122,7 +124,9 @@ def main():
     elif 'off' in button:
         FAN.fan_off = True
         fan_command = "fan_off"
-    elif 'low' in button:
+        FAN.run_command(fan_command)
+        return render_template('index.html', web_status=FAN.status)
+    if 'low' in button:
         FAN.fan_off = False
         fan_command = "fan_low"
     elif 'med' in button:
@@ -131,14 +135,14 @@ def main():
     elif 'high' in button:
         fan_command = "fan_high"
         FAN.fan_off = False
+    stop_thread = True
     if at is not None:
-        stop_thread = True
         at.join()  
     
     # Set the On OFF time for fan
     FAN.status['fan-on'] = int(button.get("fan-on", [2])[0])
     FAN.status['fan-off'] = int(button.get("fan-off", [20])[0])
-    FAN.run_command(fan_command)
+    # FAN.run_command(fan_command)
     if fan_command != "fan_off":
         stop_thread = False
         at = Thread(target=run_intermittent, args=(fan_command, lambda: stop_thread))
@@ -158,4 +162,7 @@ if __name__ == "__main__":
     at = None
     stop_thread = False
     FAN = Fan()
+    at = Thread(target=run_intermittent, args=("fan_low", lambda: stop_thread))
+    at.start()
+    # Init fan start
     start_app()

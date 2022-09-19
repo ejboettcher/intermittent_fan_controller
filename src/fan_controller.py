@@ -83,7 +83,7 @@ class FanRemote(object):
         self.fan_id = "".join(["0000", "1000"])
         self.time = datetime.datetime.now()
         self.freq = str(304000000)
-        self.status = {"fan-on": 2, "fan-off": 10}
+        self.status = {"fan-on": 2, "fan-off": 20}
         self.stop_itermittent = False
         self.GPIO_pinfan_off = True
         self.fan_light = 1  # Keep track of the light is on/off
