@@ -61,15 +61,7 @@ def sleep_check(sleep_time, check_interval, fan_command, stop=lambda: False):
         # exit criteria is when current time i
         if (curr_time - start_time).seconds >= int(sleep_time) * 60:
             return
-        elif j < 2:
-            # Sending the fan command again to ensure it does what you want in this loop
-            j += 1
-            FAN.run_command(fan_command)
-            print(fan_command)
-            time.sleep(1)
-        # elif (curr_time - start_time).seconds % 20 == 0:
-        #     print(curr_time)
-
+        
 
 def run_intermittent(fan_speed, stop=lambda: False):
     """
@@ -83,8 +75,10 @@ def run_intermittent(fan_speed, stop=lambda: False):
     while True:
         if fan_speed == "fan_off":
             FAN.fan_off = True
-        if int(FAN.status["fan-off"]) + int(FAN.status["fan-on"]) == 0:
+            FAN.run_command(fan_speed)
+        if int(FAN.status["fan-on"]) == 0:
             FAN.fan_off = True
+            FAN.run_command("fan_off")
         if FAN.fan_off:
             break
 
@@ -135,6 +129,7 @@ def main():
     elif 'high' in button:
         fan_command = "fan_high"
         FAN.fan_off = False
+
     stop_thread = True
     if at is not None:
         at.join()  
@@ -147,6 +142,8 @@ def main():
         stop_thread = False
         at = Thread(target=run_intermittent, args=(fan_command, lambda: stop_thread))
         at.start()
+    else:
+        FAN.run_command(fan_command)
     return render_template('index.html', web_status=FAN.status)
 
 

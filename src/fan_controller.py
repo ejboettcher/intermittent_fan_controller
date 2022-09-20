@@ -16,13 +16,6 @@ import subprocess
 import shlex
 
 
-def send_command_many(FAN, command_str, n=3):
-    time.sleep(.2)
-    for ii in range(n):
-        FAN.send_command(command_str)
-        time.sleep(1)
-
-
 def start_subprocess(command, str_cmd=False):
     """
     INPUTS:
@@ -109,15 +102,15 @@ class FanRemote(object):
         command_str = self.make_command(command)  
         if self.thread is not None:
             self.thread.join()
-        self.thread = Thread(target=send_command_many, args=(self, command_str))
+        self.thread = Thread(target=send_command, args=(self, command_str))
         self.thread.start()
 
     def make_command(self, command):
         sendook = "sudo rpitx/sendook "
-        if command == "light_on" or "light_off":
-            fan_signal_settings = " -0 333 -1 333 -r 2 -p 10000 "
+        if command in ["light_on", "light_off"]:
+            fan_signal_settings = " -0 333 -1 333 -r 3 -p 10000 "
         else:
-            fan_signal_settings = " -0 333 -1 333 -r 4 -p 10000 "
+            fan_signal_settings = " -0 333 -1 333 -r 5 -p 10000 "
         fan_id = ""
         for ii in range(8):
             ook = self.fan_ook()[self.fan_id[ii]]
