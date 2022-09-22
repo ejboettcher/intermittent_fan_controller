@@ -116,6 +116,7 @@ def main():
     elif 'off' in button:
         FAN.fan_off = True
         fan_command = "fan_off"
+        FAN.status['fan-on'] = 0
         FAN.run_command(fan_command)
         return render_template('index.html', web_status=FAN.status)
     if 'low' in button:
@@ -157,6 +158,7 @@ if __name__ == "__main__":
     at = None
     stop_thread = False
     FAN = Fan()
+    FAN.fan_off = False
     at = Thread(target=run_intermittent, args=("fan_low", lambda: stop_thread))
     at.start()
     # Init fan start

@@ -97,8 +97,7 @@ class FanRemote(object):
             self.fan_light = 0
         else:
             self.fan_light = 1
-        if command == 'fan_off':
-            self.status['fan-on'] = 0
+
         command_str = self.make_command(command)  
         if self.thread is not None:
             self.thread.join()
