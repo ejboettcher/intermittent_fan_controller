@@ -61,7 +61,11 @@ def sleep_check(sleep_time, check_interval, fan_command, stop=lambda: False):
         # exit criteria is when current time i
         if (curr_time - start_time).seconds >= int(sleep_time) * 60:
             return
-        
+        elif j == 3:
+            # Sending the fan command again to ensure it does what you want in this loop
+            FAN.run_command(fan_command)
+        j += 1
+
 
 def run_intermittent(fan_speed, stop=lambda: False):
     """
@@ -73,17 +77,9 @@ def run_intermittent(fan_speed, stop=lambda: False):
             This will become the command that is sent to the fan
     """
     while True:
-        if fan_speed == "fan_off":
-            FAN.fan_off = True
+        if FAN.status["fan-on"] > 0:
             FAN.run_command(fan_speed)
-        if int(FAN.status["fan-on"]) == 0:
-            FAN.fan_off = True
-            FAN.run_command("fan_off")
-        if FAN.fan_off:
-            break
-
-        FAN.run_command(fan_speed)
-        sleep_check(FAN.status["fan-on"], 2, fan_speed, stop)
+            sleep_check(FAN.status["fan-on"], 2, fan_speed, stop)
 
         # after waking from sleep, see if we should stop
         if stop():
@@ -91,13 +87,15 @@ def run_intermittent(fan_speed, stop=lambda: False):
             break
 
         # set fan off for 50 minutes
-        FAN.run_command("fan_off")
-        sleep_check(FAN.status["fan-off"], 2, "fan_off", stop)
+        if FAN.status["fan-off"] > 0:
+            FAN.run_command("fan_off")
+            sleep_check(FAN.status["fan-off"], 2, "fan_off", stop)
 
         # after waking from sleep, see if we should stop
         if stop():
             print('thread exiting')
             break
+    return
 
 
 @app.route("/", methods=['GET', 'POST'])
