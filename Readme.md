@@ -159,6 +159,11 @@ There you have it! You can create your own custom-defined remote controller usin
 and a bit of wire. Note that if you are new to working with hardware and RF there can be a steep learning curve. 
 Don’t worry if you can’t get the project to work the first or even the hundredth time; these things take practice.
 
+
+### Keep Fan On
+
+To keep the fan on, set the Fan off time to zero.
+
 ## References
 
 Do watch River's Educational Channel for how to set up your Raspberry Pi and for the reason why we need a low pass filter.
