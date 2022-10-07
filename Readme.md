@@ -2,7 +2,7 @@ Based on
 
 # Intermittent Fan Controller
 ## By: Evelyn J. Boettcher
-## Written for Anaconda's DIY 
+## Written for [Anaconda's DIY Blog](https://www.anaconda.com/blog/create-an-intermittent-fan-controller-with-python)
 
 ## Background
 
